@@ -1,25 +1,46 @@
 const { response,request } = require('express');
 const bcrypt = require('bcryptjs');
+const Usuario = require('../models/usuario');
 
-
-const usuariosGet = (req=request, res=response) =>{
+const usuariosGet = async(req=request, res=response) =>{
     // res.status(200).json({
+    const {limite = 5,desde = 0} = req.query; 
 
-    const {nombre,apikey} = req.query;
+    // const usuarios = await Usuario.find({estado:true})
+    //     .skip(Number(desde))
+    //     .limit(Number(limite));
+
+    // const total = await Usuario.countDocuments({estado:true});
+
+    //const resp = await Promise.all([
+    const [usuarios,total] = await Promise.all([
+
+        Usuario.find({estado:true})
+            .skip(Number(desde))
+            .limit(Number(limite)), 
+        Usuario.countDocuments({estado:true})
+    ]);
 
     res.json({
-        msg: 'Get mundo - controllerr',
-        nombre,
-        apikey
+        total,
+        usuarios
     });
 };
 
-const usuariosPut = (req, res=response) => {
+const usuariosPut = async (req, res=response) => {
     const {id} = req.params;
+    const {_id, password, google, correo, ...resto} = req.body;
+
+    if(password){
+        const salt =  bcrypt.genSaltSync();
+        resto.password = bcrypt.hashSync(password, salt);
+    }
+
+    const usuario = await Usuario.findByIdAndUpdate(id, resto);
 
     res.json({
-        msg: 'Put mundo - controller',
-        id
+        msg: 'Put: usuario actualizado',
+        usuario
     });
 };
 

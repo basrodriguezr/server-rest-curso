@@ -26,8 +26,18 @@ const existeUsuario = async(nombre = '') => {
     }
 }
 
+const existeUsuarioPorID = async(id) => {
+    const existeUsuario = await Usuario.findById(id);
+
+    if(!existeUsuario){
+        throw new Error('El Usuario no existe.');  
+    }
+}
+
+
 module.exports = {
     esRoleValido,
     existeCorreo,
-    existeUsuario
+    existeUsuario,
+    existeUsuarioPorID
 }
