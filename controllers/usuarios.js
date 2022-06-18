@@ -61,9 +61,18 @@ const usuariosPost = async(req, res=response) =>{
     });
 };
 
-const usuariosDelete = (req, res=response) =>{
+const usuariosDelete = async(req, res=response) =>{
+    const {id} = req.params;
+
+    //borrar dato fisicamente
+    //const usuario = await Usuario.findByIdAndDelete(id);
+
+    //se cambia el estado a falso para no eliminiar
+    const usuario = await Usuario.findByIdAndUpdate(id, {estado:false});
+    
     res.json({
-        msg: 'Delete mundo - controller'
+        msg: 'Usuario removido.',
+        usuario
     });
 };
 
