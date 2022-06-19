@@ -69,10 +69,12 @@ const usuariosDelete = async(req, res=response) =>{
 
     //se cambia el estado a falso para no eliminiar
     const usuario = await Usuario.findByIdAndUpdate(id, {estado:false});
-    
+    const usuarioAutenticado = req.usuario;
+
+
     res.json({
         msg: 'Usuario removido.',
-        usuario
+        usuarioAutenticado
     });
 };
 

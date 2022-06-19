@@ -1,12 +1,14 @@
 const {response} = require('express');
-const usuario = require('../models/usuario');
 const bcrypt = require('bcryptjs');
+
+const Usuario = require('../models/usuario');
+const{ generarJWT } = require('../helpers/generar-jwt');
 
 const login = async (req,res = response)=>{
     const {correo, password} = req.body;
 
     try {
-        const usuario = await usuario.findOne({correo})
+        const usuario = await Usuario.findOne({correo})
         if(!usuario){   
             return res.status(400).json({
                 msg: 'Correo no existe'
@@ -26,9 +28,12 @@ const login = async (req,res = response)=>{
                 msg: 'Contraseña incorrecta'
             });
         }
-        
+
+        const token = await generarJWT(usuario.id);
+
         res.json({
-            msg: 'Login ok'
+            usuario,
+            token
         });
     } catch (error) {
         return res.status(400).json({
