@@ -24,6 +24,8 @@
     </div>
     <button id="googleSignOut">Sign out</button>
     <script>
+        let url = (windows.location.hostname.includes('localhost')) ? 'http://localhost:3000' : 'https://rest-server-learning.herokuapp.com';
+        
         function handleCredentialResponse(response) {
             const body = {
                 id_token: response.credential,
