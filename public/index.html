@@ -24,7 +24,7 @@
     </div>
     <button id="googleSignOut">Sign out</button>
     <script>
-        let url = (window.location.hostname.includes('localhost')) ? 'http://localhost:8080' : 'https://rest-server-learning.herokuapp.com';
+        let url = (window.location.hostname.includes('localhost')) ? 'http://localhost:8080/api/auth/google' : 'https://rest-server-learning.herokuapp.com/api/auth/google';
 
         function handleCredentialResponse(response) {
             const body = {
