@@ -21,6 +21,7 @@ router.get('/',categoriasGet);
 router.get('/:id',[
         check('id', 'No es un ID válido').isMongoId(),        
         check('id').custom(existeCategoriaPorID), 
+        validarCampos
 ],categoriasGetByID);
 
 //crear categoria - privado - cualquier usuario con token valido
