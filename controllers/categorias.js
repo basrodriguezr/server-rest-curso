@@ -43,8 +43,7 @@ const categoriasPost = async(req, res=response) =>{
     await categoria.save().then(() => console.log('meow'));
 
     res.status(201).json({
-        msg:`categoria ${nombre} creada`,
-        data
+        msg:`categoria ${nombre} creada`
     });
 };
 //actualizar categoria - privado - cualquier usuario con token valido
@@ -56,7 +55,7 @@ const categoriasPut = async (req, res=response) => {
 
     res.json({
         msg: 'Put: categoria actualizada',
-        categoria
+        nombre
     });
 };
 

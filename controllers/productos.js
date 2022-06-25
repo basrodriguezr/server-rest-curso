@@ -9,11 +9,12 @@ const productosGet = async(req=request, res=response) =>{
     const [productos,total] = await Promise.all([
         Producto.find({estado:true})
             .populate('usuario', 'nombre')
+            .populate('categoria', 'nombre')
             .skip(Number(desde))
             .limit(Number(limite)), 
         Producto.countDocuments({estado:true})
     ]);
-
+    
     res.json({
         total,
         productos
@@ -23,7 +24,9 @@ const productosGet = async(req=request, res=response) =>{
 const productosGetByID = async(req=request, res=response) =>{
     const {id} = req.params; 
 
-    const producto = await Producto.findById(id);
+    const producto = await Producto.findById(id)                            
+                            .populate('usuario', 'nombre')
+                            .populate('categoria', 'nombre');
 
     res.json({
         producto
@@ -31,14 +34,11 @@ const productosGetByID = async(req=request, res=response) =>{
 };
 //crear categoria - privado - cualquier usuario con token valido
 const productosPost = async(req, res=response) =>{  
-    const { nombre, valor, idCategoria } = req.body;
-
-    const categoria = await Categoria.findById(idCategoria);
+    const { estado, usuario, ...body } = req.body;
 
     const data = {
-        nombre,
-        valor,
-        categoria,
+        ...body,
+        nombre: body.nombre.toUpperCase(),
         usuario: req.usuario._id
     }  
 
@@ -47,16 +47,16 @@ const productosPost = async(req, res=response) =>{
     await producto.save().then(() => console.log('meow'));
 
     res.status(201).json({
-        msg:`Producto ${nombre} creado`,
+        msg:`Producto ${data.nombre} creado`,
         data
     });
 };
-//actualizar categoria - privado - cualquier usuario con token valido
+//actualizar producto - privado - cualquier usuario con token valido
 const productosPut = async (req, res=response) => {
     const {id} = req.params;
-    const {_id, ...resto} = req.body;
+    const { estado, usuario, ...body } = req.body;
 
-    const producto = await Producto.findByIdAndUpdate(id, resto);
+    const producto = await Producto.findByIdAndUpdate(id, body,{new:true});
 
     res.json({
         msg: 'Put: Producto actualizado.',
@@ -64,7 +64,7 @@ const productosPut = async (req, res=response) => {
     });
 };
 
-//borrar categoria - admin
+//borrar producto - admin
 const productosDelete = async(req, res=response) =>{
     const {id} = req.params;
 

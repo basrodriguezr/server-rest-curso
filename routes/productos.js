@@ -33,8 +33,9 @@ router.post('/', [
         check('nombre').custom(existeProducto),
         check('nombre', 'El nombre es obligatorio.').not().isEmpty(), 
         check('valor', 'El valor es obligatorio.').not().isEmpty(), 
-        check('idCategoria', 'La categoria es obligatoria.').not().isEmpty(),
-        check('idCategoria', 'no es un id válido').isMongoId(),
+        check('categoria', 'La categoria es obligatoria.').not().isEmpty(),
+        check('categoria', 'no es un id válido').isMongoId(),
+        check('categoria').custom(existeCategoriaPorID),
         validarCampos
 ],productosPost);
 
