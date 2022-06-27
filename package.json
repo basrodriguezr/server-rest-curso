@@ -1,5 +1,5 @@
 {
-  "name": "maqueta-restserver",
+  "name": "restserver",
   "version": "2.0.0",
   "description": "",
   "main": "index.js",
@@ -8,13 +8,14 @@
     "start": "node app.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Bastian Rodríguez",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "express-fileupload": "^1.4.0",
     "express-validator": "^6.14.1",
     "google-auth-library": "^8.0.2",
     "jsonwebtoken": "^8.5.1",

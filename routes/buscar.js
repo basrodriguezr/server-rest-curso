@@ -6,5 +6,7 @@ const router = Router();
 
 router.get('/:coleccion/:busqueda', buscar);
 
+router.get('/:coleccion/:busqueda', buscar);
+
 
 module.exports = router;

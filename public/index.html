@@ -43,15 +43,14 @@
                 })
                 .catch(console.warn);
         }
+
         const button = document.getElementById('googleSignOut');
 
-        button.onclick = ()=>{
-            console.log(google.accounts.id)
+        button.onclick = () =>{
+            const id = google.accounts.id;
+
             google.accounts.id.disableAutoSelect();
-            google.accounts.id.revoke(localStorage.getItem('email'), done =>{
-                localStorage.clear();
-                location.reload();
-            });
+            console.log(id);
         }
     </script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>

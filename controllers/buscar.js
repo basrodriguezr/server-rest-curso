@@ -6,6 +6,7 @@ const coleccionesPermitidas=[
     'usuarios',
     'categorias',
     'productos',
+    'buscarProductoPorCategoria',
     'roles'
 ];
 
@@ -74,6 +75,29 @@ const buscarProducto = async(termino,res=response) => {
     });
 }
 
+const buscarProductoPorCategoria = async(req ,res=response) => {
+    const esMongoId = ObjectId.isValid(req);
+
+    if(esMongoId){
+        const categoria = await Categoria.findById(req);
+        const productos = await Producto.find({categoria});
+        return res.json({
+            results: productos
+        });
+    }
+
+    
+    const categoria = await Categoria.findOne({nombre:req});
+
+    console.log(categoria);
+
+    const productos = await Producto.find({$or:[{categoria}],$and:[{estado:true}]});
+
+    res.json({
+        results: productos
+    });
+}
+
 const buscar = (req,res=response) => {
     const {coleccion,busqueda} = req.params;
 
@@ -96,6 +120,9 @@ const buscar = (req,res=response) => {
             buscarProducto(busqueda,res);
         break;
 
+        case 'buscarProductoPorCategoria':
+            buscarProductoPorCategoria(busqueda,res);
+        break;
         default:
             return res.status(500).json({
                 msg:`Para el Developer: Hay que agregar el case para la colección ${coleccion}`
