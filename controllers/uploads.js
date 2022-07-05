@@ -162,7 +162,6 @@ const actualizarImagenCloudinary = async (req, res = response) => {
 
     await model.save();
 
-
     res.json(model);
 }
 
