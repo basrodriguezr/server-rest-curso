@@ -79,8 +79,46 @@ const actualizarImagen = async (req, res = response) => {
     return res.json(model);
 }
 
+const mostrarImagen = async (req, res = response) => {
+    const { id,coleccion } = req.params;
+
+    let model;
+
+    switch (coleccion) {
+        case 'producto':
+            model = await Producto.findById(id);
+            if(!model){
+                return  res.status(400).json({msg: 'No existe el producto'});
+            }
+            break;
+
+        case 'usuario':
+            model = await Usuario.findById(id);
+            if(!model){
+                return  res.status(400).json({msg: 'No existe el usuario'});
+            }
+            break;
+
+        default:
+            return res.status(400).json({msg: 'La colección no es valida'});
+    }   
+
+  //limpiar imagenes previas
+    if(model.img){
+        const pathImagen = path.join(__dirname ,'../uploads', coleccion, 'images' ,model.img);
+        if(fs.existsSync(pathImagen)){
+            return res.sendFile(pathImagen);
+        }
+    }  
+
+    const dirNoImage = path.join(__dirname ,'../assets/noImage.jpg')
+    console.log(dirNoImage);
+    return res.sendFile(dirNoImage);
+}
+
 module.exports = { 
     cargarArchivo,
     cargarImagen,
-    actualizarImagen
+    actualizarImagen,
+    mostrarImagen
 };
