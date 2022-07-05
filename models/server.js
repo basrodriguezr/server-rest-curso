@@ -38,11 +38,11 @@ class Server{
         this.app.use(express.static('public'));
         
         //carga de archivos
-        this.app.use(fileUpload({
-            useTempFiles : true,
-            tempFileDir : '/tmp/',
-            createParentPath : true
-        }));        
+        // this.app.use(fileUpload({
+        //     useTempFiles : true,
+        //     tempFileDir : '/tmp/',
+        //     createParentPath : true
+        // }));        
     }
 
     routes(){
