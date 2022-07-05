@@ -1,5 +1,8 @@
 const path = require('path');
 const fs = require('fs');
+const cloudinary = require('cloudinary').v2;
+cloudinary.config(process.env.CLOUDINARY_URL);
+
 const { response } = require('express');
 const { subirImagen } = require('../helpers');
 const { Usuario, Producto } = require('../models/');
@@ -116,9 +119,58 @@ const mostrarImagen = async (req, res = response) => {
     return res.sendFile(dirNoImage);
 }
 
+const actualizarImagenCloudinary = async (req, res = response) => {
+    const { id,coleccion } = req.params;
+
+    let model;
+
+    switch (coleccion) {
+        case 'producto':
+            model = await Producto.findById(id);
+            if(!model){
+                return  res.status(400).json({msg: 'No existe el producto'});
+            }
+            break;
+
+        case 'usuario':
+            model = await Usuario.findById(id);
+            if(!model){
+                return  res.status(400).json({msg: 'No existe el usuario'});
+            }
+            break;
+
+        default:
+            return res.status(400).json({msg: 'La colección no es valida'});
+    }   
+
+    //limpiar imagenes previas
+    if(model.img){
+        const nombreArr = model.img.split('/');
+        const nombre = nombreArr[nombreArr.length - 1];
+        const [public_id] = nombre.split('.');
+        
+        await cloudinary.uploader.destroy(public_id, (err) => {
+            if(err){
+                return res.status(401).json({msg: 'Error al eliminar la imagen'});
+            }
+        });
+    }    
+
+    const {tempFilePath} = req.files.archivo
+    const { secure_url } = await cloudinary.uploader.upload(tempFilePath);
+    model.img = secure_url;
+
+    await model.save();
+
+
+    res.json(model);
+}
+
 module.exports = { 
     cargarArchivo,
     cargarImagen,
-    actualizarImagen,
-    mostrarImagen
+    //actualizarImagen,
+    actualizarImagenCloudinary,
+    mostrarImagen,
+    
 };
