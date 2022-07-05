@@ -3,16 +3,17 @@ const { check } = require('express-validator');
 
 const { validarCampos,
         validarJWT, 
-        tieneRol,
         esAdminRole} = require('../middlewares');
 
-const { esRoleValido, 
-        existeCorreo, 
-        existeCategoria, 
-        existeCategoriaPorID, 
-        existeUsuarioPorID} = require("../helpers/db-validators");
+const { existeCategoria, 
+        existeCategoriaPorID } = require("../helpers");
 
-const { categoriasGet, categoriasPost, categoriasPut, categoriasDelete, categoriasGetByID } = require('../controllers/categorias');
+const { categoriasGet, 
+        categoriasPost, 
+        categoriasPut, 
+        categoriasDelete, 
+        categoriasGetByID } = require('../controllers/categorias');
+        
 const router = Router();
 
 //obtener categorias

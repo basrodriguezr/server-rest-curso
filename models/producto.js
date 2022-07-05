@@ -9,7 +9,8 @@ const productoSchema = Schema({
     valor: {
         type: Number,
         required: [true, 'El valor es necesario'],
-        min: [0, 'El valor no puede ser menor a 0']
+        min: [0, 'El valor no puede ser menor a 0'],
+        default: 0
     },
     estado:{
         type: Boolean,
@@ -24,7 +25,10 @@ const productoSchema = Schema({
         type: Schema.Types.ObjectId,
         ref: 'Categoria',
         required: [true, 'La categoria es necesaria']
-    }
+    },
+    descripción: { type: String },
+    disponible: { type: Boolean, default: true },
+    img: { type: String },
 });
 
 productoSchema.methods.toJSON = function() {

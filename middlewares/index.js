@@ -1,9 +1,14 @@
-const validaCampos  = require('./validar-campos');
-const validaJWT = require('./validar-jwt');
-const validaRol = require('./validar-roles');
+const validarCampos  = require('./validar-campos');
+const ValidarFormatos = require('./validar-formatos');
+const ValidarJWT = require('./validar-jwt');
+const ValidarRol = require('./validar-roles');
+const ValidaArchivo = require('./validar-archivos');
+
 
 module.exports = {
-    ...validaCampos,
-    ...validaJWT,
-    ...validaRol
+    ...validarCampos,
+    ...ValidarFormatos,
+    ...ValidarJWT,
+    ...ValidarRol,
+    ...ValidaArchivo
 }
