@@ -121,7 +121,7 @@ const mostrarImagen = async (req, res = response) => {
 }
 
 const actualizarImagenCloudinary = async (req, res = response) => {
-    const { id,coleccion } = req.params;
+    const { id, coleccion } = req.params;
 
     let model;
 
@@ -157,8 +157,9 @@ const actualizarImagenCloudinary = async (req, res = response) => {
         });
     }    
 
-    const {tempFilePath} = req.files.archivo
+    const {tempFilePath} = req.files.archivo;
     const { secure_url } = await cloudinary.uploader.upload(tempFilePath);
+    
     model.img = secure_url;
 
     await model.save();
@@ -169,7 +170,7 @@ const actualizarImagenCloudinary = async (req, res = response) => {
 module.exports = { 
     cargarArchivo,
     cargarImagen,
-    //actualizarImagen,
+    actualizarImagen,
     actualizarImagenCloudinary,
     mostrarImagen,
     

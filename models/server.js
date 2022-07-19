@@ -38,11 +38,11 @@ class Server{
         this.app.use(express.static('public'));
         
         //carga de archivos
-        // this.app.use(fileUpload({
-        //     useTempFiles : true,
-        //     tempFileDir : '/tmp/',
-        //     createParentPath : true
-        // }));        
+        this.app.use(fileUpload({
+            useTempFiles : true,
+            tempFileDir : '/tmp/',
+            createParentPath : true
+        }));        
     }
 
     routes(){
@@ -55,7 +55,7 @@ class Server{
     }
 
     listen(){
-        this.app.listen(this.port,()=>{
+        this.app.listen(this.port || 3000,()=>{
             console.log(`Listening at http://localhost:${this.port}`)
         });
     }
